@@ -13,6 +13,7 @@ class MediaOptions {
   const MediaOptions({
     this.imageOptions = const ImageOptions(),
     required this.allowMultiple,
+    this.selectionLimit,
   });
 
   /// Options that will apply to images upon selection.
@@ -20,4 +21,7 @@ class MediaOptions {
 
   /// Whether to allow for selecting multiple media.
   final bool allowMultiple;
+
+  /// The maximum number of selections the user can make, if available
+  final int? selectionLimit;
 }

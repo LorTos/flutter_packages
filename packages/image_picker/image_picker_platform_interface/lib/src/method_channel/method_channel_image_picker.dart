@@ -40,11 +40,13 @@ class MethodChannelImagePicker extends ImagePickerPlatform {
     double? maxWidth,
     double? maxHeight,
     int? imageQuality,
+    int? selectionLimit,
   }) async {
     final List<dynamic>? paths = await _getMultiImagePath(
       maxWidth: maxWidth,
       maxHeight: maxHeight,
       imageQuality: imageQuality,
+      selectionLimit: selectionLimit,
     );
     if (paths == null) {
       return null;
@@ -58,6 +60,7 @@ class MethodChannelImagePicker extends ImagePickerPlatform {
     double? maxHeight,
     int? imageQuality,
     bool requestFullMetadata = true,
+    int? selectionLimit,
   }) {
     if (imageQuality != null && (imageQuality < 0 || imageQuality > 100)) {
       throw ArgumentError.value(
@@ -72,6 +75,10 @@ class MethodChannelImagePicker extends ImagePickerPlatform {
       throw ArgumentError.value(maxHeight, 'maxHeight', 'cannot be negative');
     }
 
+    if (selectionLimit != null && selectionLimit < 1) {
+      throw ArgumentError.value(selectionLimit, 'selectionLimit', 'cannot be less than 1');
+    }
+
     return _channel.invokeMethod<List<dynamic>?>(
       'pickMultiImage',
       <String, dynamic>{
@@ -79,6 +86,7 @@ class MethodChannelImagePicker extends ImagePickerPlatform {
         'maxHeight': maxHeight,
         'imageQuality': imageQuality,
         'requestFullMetadata': requestFullMetadata,
+        'selectionLimit': selectionLimit,
       },
     );
   }
@@ -222,11 +230,13 @@ class MethodChannelImagePicker extends ImagePickerPlatform {
     double? maxWidth,
     double? maxHeight,
     int? imageQuality,
+    int? selectionLimit,
   }) async {
     final List<dynamic>? paths = await _getMultiImagePath(
       maxWidth: maxWidth,
       maxHeight: maxHeight,
       imageQuality: imageQuality,
+      selectionLimit: selectionLimit,
     );
     if (paths == null) {
       return null;
@@ -244,6 +254,7 @@ class MethodChannelImagePicker extends ImagePickerPlatform {
       maxHeight: options.imageOptions.maxHeight,
       imageQuality: options.imageOptions.imageQuality,
       requestFullMetadata: options.imageOptions.requestFullMetadata,
+      selectionLimit: options.selectionLimit,
     );
     if (paths == null) {
       return <XFile>[];

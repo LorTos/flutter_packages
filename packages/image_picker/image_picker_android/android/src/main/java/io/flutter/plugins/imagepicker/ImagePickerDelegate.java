@@ -296,7 +296,18 @@ public class ImagePickerDelegate
     Intent pickMediaIntent;
     if (generalOptions.getUsePhotoPicker() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
       if (generalOptions.getAllowMultiple()) {
-        pickMediaIntent =
+        final @Nullable Long selectionLimit = generalOptions.getSelectionLimit();
+        if (selectionLimit != null) {
+          pickMediaIntent =
+            new ActivityResultContracts.PickMultipleVisualMedia(selectionLimit.intValue())
+                .createIntent(
+                    activity,
+                    new PickVisualMediaRequest.Builder()
+                        .setMediaType(
+                            ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE)
+                        .build());
+        } else {
+          pickMediaIntent =
             new ActivityResultContracts.PickMultipleVisualMedia()
                 .createIntent(
                     activity,
@@ -304,6 +315,7 @@ public class ImagePickerDelegate
                         .setMediaType(
                             ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE)
                         .build());
+        }
       } else {
         pickMediaIntent =
             new ActivityResultContracts.PickVisualMedia()
@@ -427,13 +439,14 @@ public class ImagePickerDelegate
   public void chooseMultiImageFromGallery(
       @NonNull ImageSelectionOptions options,
       boolean usePhotoPicker,
-      @NonNull Messages.Result<List<String>> result) {
+      @NonNull Messages.Result<List<String>> result,
+      @Nullable Long selectionLimit) {
     if (!setPendingOptionsAndResult(options, null, result)) {
       finishWithAlreadyActiveError(result);
       return;
     }
 
-    launchMultiPickImageFromGalleryIntent(usePhotoPicker);
+    launchMultiPickImageFromGalleryIntent(usePhotoPicker, selectionLimit);
   }
 
   private void launchPickImageFromGalleryIntent(Boolean usePhotoPicker) {
@@ -453,16 +466,26 @@ public class ImagePickerDelegate
     activity.startActivityForResult(pickImageIntent, REQUEST_CODE_CHOOSE_IMAGE_FROM_GALLERY);
   }
 
-  private void launchMultiPickImageFromGalleryIntent(Boolean usePhotoPicker) {
+  private void launchMultiPickImageFromGalleryIntent(Boolean usePhotoPicker, @Nullable Long selectionLimit) {
     Intent pickMultiImageIntent;
     if (usePhotoPicker && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-      pickMultiImageIntent =
+      if (selectionLimit != null) {
+        pickMultiImageIntent =
+          new ActivityResultContracts.PickMultipleVisualMedia(selectionLimit.intValue())
+              .createIntent(
+                  activity,
+                  new PickVisualMediaRequest.Builder()
+                      .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                      .build());
+      } else {
+        pickMultiImageIntent =
           new ActivityResultContracts.PickMultipleVisualMedia()
               .createIntent(
                   activity,
                   new PickVisualMediaRequest.Builder()
                       .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
                       .build());
+      }
     } else {
       pickMultiImageIntent = new Intent(Intent.ACTION_GET_CONTENT);
       pickMultiImageIntent.setType("image/*");

@@ -48,8 +48,7 @@ class ImagePickerPlugin extends ImagePickerPlatform {
     required ImageSource source,
     ImagePickerOptions options = const ImagePickerOptions(),
   }) async {
-    final String? capture =
-        computeCaptureAttribute(source, options.preferredCameraDevice);
+    final String? capture = computeCaptureAttribute(source, options.preferredCameraDevice);
     final List<XFile> files = await getFiles(
       accept: _kAcceptImageMimeType,
       capture: capture,
@@ -103,8 +102,7 @@ class ImagePickerPlugin extends ImagePickerPlatform {
     CameraDevice preferredCameraDevice = CameraDevice.rear,
     Duration? maxDuration,
   }) async {
-    final String? capture =
-        computeCaptureAttribute(source, preferredCameraDevice);
+    final String? capture = computeCaptureAttribute(source, preferredCameraDevice);
     final List<XFile> files = await getFiles(
       accept: _kAcceptVideoMimeType,
       capture: capture,
@@ -201,6 +199,7 @@ class ImagePickerPlugin extends ImagePickerPlatform {
     double? maxWidth,
     double? maxHeight,
     int? imageQuality,
+    int? selectionLimit,
   }) async {
     return getMultiImageWithOptions(
       options: MultiImagePickerOptions(
@@ -209,6 +208,7 @@ class ImagePickerPlugin extends ImagePickerPlatform {
           maxHeight: maxHeight,
           imageQuality: imageQuality,
         ),
+        selectionLimit: selectionLimit,
       ),
     );
   }
@@ -236,8 +236,7 @@ class ImagePickerPlugin extends ImagePickerPlatform {
   /// Handles the OnChange event from a FileUploadInputElement object
   /// Returns a list of selected files.
   List<html.File>? _handleOnChangeEvent(html.Event event) {
-    final html.FileUploadInputElement? input =
-        event.target as html.FileUploadInputElement?;
+    final html.FileUploadInputElement? input = event.target as html.FileUploadInputElement?;
     return input == null ? null : _getFilesFromInput(input);
   }
 
@@ -281,8 +280,7 @@ class ImagePickerPlugin extends ImagePickerPlatform {
   html.Element _ensureInitialized(String id) {
     html.Element? target = html.querySelector('#$id');
     if (target == null) {
-      final html.Element targetElement =
-          html.Element.tag('flt-image-picker-inputs')..id = id;
+      final html.Element targetElement = html.Element.tag('flt-image-picker-inputs')..id = id;
 
       html.querySelector('body')!.children.add(targetElement);
       target = targetElement;
@@ -332,8 +330,7 @@ typedef OverrideCreateInputFunction = html.Element Function(
 
 /// A function that extracts list of files from the file `input` passed in.
 @visibleForTesting
-typedef OverrideExtractMultipleFilesFromInputFunction = List<html.File>
-    Function(html.Element? input);
+typedef OverrideExtractMultipleFilesFromInputFunction = List<html.File> Function(html.Element? input);
 
 /// Overrides for some of the functionality above.
 @visibleForTesting

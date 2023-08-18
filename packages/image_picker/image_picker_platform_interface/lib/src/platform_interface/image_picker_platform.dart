@@ -93,12 +93,15 @@ abstract class ImagePickerPlatform extends PlatformInterface {
   /// image types such as JPEG. If compression is not supported for the image that is picked,
   /// a warning message will be logged.
   ///
+  /// If specified, `selectionLimit` will limit the max amount of images that can be selected, where available.
+  ///
   /// If no images were picked, the return value is null.
   @Deprecated('Use getMultiImageWithOptions instead.')
   Future<List<PickedFile>?> pickMultiImage({
     double? maxWidth,
     double? maxHeight,
     int? imageQuality,
+    int? selectionLimit,
   }) {
     throw UnimplementedError('pickMultiImage() has not been implemented.');
   }
@@ -203,12 +206,15 @@ abstract class ImagePickerPlatform extends PlatformInterface {
   /// image types such as JPEG. If compression is not supported for the image that is picked,
   /// a warning message will be logged.
   ///
+  /// If specified, `selectionLimit` will limit the max amount of images that can be selected, where available.
+  ///
   /// If no images were picked, the return value is null.
   @Deprecated('Use getMultiImageWithOptions instead.')
   Future<List<XFile>?> getMultiImage({
     double? maxWidth,
     double? maxHeight,
     int? imageQuality,
+    int? selectionLimit,
   }) {
     throw UnimplementedError('getMultiImage() has not been implemented.');
   }
@@ -318,6 +324,7 @@ abstract class ImagePickerPlatform extends PlatformInterface {
       maxWidth: options.imageOptions.maxWidth,
       maxHeight: options.imageOptions.maxHeight,
       imageQuality: options.imageOptions.imageQuality,
+      selectionLimit: options.selectionLimit,
     );
     return pickedImages ?? <XFile>[];
   }
@@ -357,8 +364,7 @@ abstract class CameraDelegatingImagePickerPlatform extends ImagePickerPlatform {
     if (source == ImageSource.camera) {
       final ImagePickerCameraDelegate? delegate = cameraDelegate;
       if (delegate == null) {
-        throw StateError(
-            'This implementation of ImagePickerPlatform requires a '
+        throw StateError('This implementation of ImagePickerPlatform requires a '
             '"cameraDelegate" in order to use ImageSource.camera');
       }
       return delegate.takePhoto(
@@ -378,18 +384,13 @@ abstract class CameraDelegatingImagePickerPlatform extends ImagePickerPlatform {
     if (source == ImageSource.camera) {
       final ImagePickerCameraDelegate? delegate = cameraDelegate;
       if (delegate == null) {
-        throw StateError(
-            'This implementation of ImagePickerPlatform requires a '
+        throw StateError('This implementation of ImagePickerPlatform requires a '
             '"cameraDelegate" in order to use ImageSource.camera');
       }
       return delegate.takeVideo(
           options: ImagePickerCameraDelegateOptions(
-              preferredCameraDevice: preferredCameraDevice,
-              maxVideoDuration: maxDuration));
+              preferredCameraDevice: preferredCameraDevice, maxVideoDuration: maxDuration));
     }
-    return super.getVideo(
-        source: source,
-        preferredCameraDevice: preferredCameraDevice,
-        maxDuration: maxDuration);
+    return super.getVideo(source: source, preferredCameraDevice: preferredCameraDevice, maxDuration: maxDuration);
   }
 }

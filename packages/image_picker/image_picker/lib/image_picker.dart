@@ -129,6 +129,7 @@ class ImagePicker {
     double? maxHeight,
     int? imageQuality,
     bool requestFullMetadata = true,
+    int? selectionLimit,
   }) {
     final ImageOptions imageOptions = ImageOptions.createAndValidate(
       maxWidth: maxWidth,
@@ -140,6 +141,7 @@ class ImagePicker {
     return platform.getMultiImageWithOptions(
       options: MultiImagePickerOptions(
         imageOptions: imageOptions,
+        selectionLimit: selectionLimit,
       ),
     );
   }
@@ -240,6 +242,7 @@ class ImagePicker {
     double? maxHeight,
     int? imageQuality,
     bool requestFullMetadata = true,
+    int? selectionLimit,
   }) {
     return platform.getMedia(
       options: MediaOptions(
@@ -250,6 +253,7 @@ class ImagePicker {
           imageQuality: imageQuality,
           requestFullMetadata: requestFullMetadata,
         ),
+        selectionLimit: selectionLimit,
       ),
     );
   }

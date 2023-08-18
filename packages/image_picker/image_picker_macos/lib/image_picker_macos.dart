@@ -54,10 +54,8 @@ class ImagePickerMacOS extends CameraDelegatingImagePickerPlatform {
     CameraDevice preferredCameraDevice = CameraDevice.rear,
     Duration? maxDuration,
   }) async {
-    final XFile? file = await getVideo(
-        source: source,
-        preferredCameraDevice: preferredCameraDevice,
-        maxDuration: maxDuration);
+    final XFile? file =
+        await getVideo(source: source, preferredCameraDevice: preferredCameraDevice, maxDuration: maxDuration);
     if (file != null) {
       return PickedFile(file.path);
     }
@@ -100,10 +98,8 @@ class ImagePickerMacOS extends CameraDelegatingImagePickerPlatform {
         // TODO(stuartmorgan): Add a native implementation that can use
         // PHPickerViewController on macOS 13+, with this as a fallback for
         // older OS versions: https://github.com/flutter/flutter/issues/125829.
-        const XTypeGroup typeGroup =
-            XTypeGroup(uniformTypeIdentifiers: <String>['public.image']);
-        final XFile? file = await fileSelector
-            .openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+        const XTypeGroup typeGroup = XTypeGroup(uniformTypeIdentifiers: <String>['public.image']);
+        final XFile? file = await fileSelector.openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
         return file;
     }
     // Ensure that there's a fallback in case a new source is added.
@@ -125,15 +121,10 @@ class ImagePickerMacOS extends CameraDelegatingImagePickerPlatform {
   }) async {
     switch (source) {
       case ImageSource.camera:
-        return super.getVideo(
-            source: source,
-            preferredCameraDevice: preferredCameraDevice,
-            maxDuration: maxDuration);
+        return super.getVideo(source: source, preferredCameraDevice: preferredCameraDevice, maxDuration: maxDuration);
       case ImageSource.gallery:
-        const XTypeGroup typeGroup =
-            XTypeGroup(uniformTypeIdentifiers: <String>['public.movie']);
-        final XFile? file = await fileSelector
-            .openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+        const XTypeGroup typeGroup = XTypeGroup(uniformTypeIdentifiers: <String>['public.movie']);
+        final XFile? file = await fileSelector.openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
         return file;
     }
     // Ensure that there's a fallback in case a new source is added.
@@ -149,14 +140,13 @@ class ImagePickerMacOS extends CameraDelegatingImagePickerPlatform {
     double? maxWidth,
     double? maxHeight,
     int? imageQuality,
+    int? selectionLimit,
   }) async {
     // TODO(stuartmorgan): Add a native implementation that can use
     // PHPickerViewController on macOS 13+, with this as a fallback for
     // older OS versions: https://github.com/flutter/flutter/issues/125829.
-    const XTypeGroup typeGroup =
-        XTypeGroup(uniformTypeIdentifiers: <String>['public.image']);
-    final List<XFile> files = await fileSelector
-        .openFiles(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+    const XTypeGroup typeGroup = XTypeGroup(uniformTypeIdentifiers: <String>['public.image']);
+    final List<XFile> files = await fileSelector.openFiles(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
     return files;
   }
 
@@ -165,18 +155,15 @@ class ImagePickerMacOS extends CameraDelegatingImagePickerPlatform {
   // ignored.
   @override
   Future<List<XFile>> getMedia({required MediaOptions options}) async {
-    const XTypeGroup typeGroup = XTypeGroup(
-        label: 'images and videos',
-        extensions: <String>['public.image', 'public.movie']);
+    const XTypeGroup typeGroup =
+        XTypeGroup(label: 'images and videos', extensions: <String>['public.image', 'public.movie']);
 
     List<XFile> files;
 
     if (options.allowMultiple) {
-      files = await fileSelector
-          .openFiles(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+      files = await fileSelector.openFiles(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
     } else {
-      final XFile? file = await fileSelector
-          .openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+      final XFile? file = await fileSelector.openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
       files = <XFile>[
         if (file != null) file,
       ];

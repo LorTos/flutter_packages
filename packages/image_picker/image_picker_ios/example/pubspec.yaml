@@ -26,5 +26,9 @@ dev_dependencies:
   integration_test:
     sdk: flutter
 
+dependency_overrides:
+  image_picker_platform_interface:
+    path: ../../image_picker_platform_interface
+
 flutter:
   uses-material-design: true

@@ -18,9 +18,7 @@ class _LoggedMethodCall {
 
   @override
   bool operator ==(Object other) {
-    return other is _LoggedMethodCall &&
-        name == other.name &&
-        mapEquals(arguments, other.arguments);
+    return other is _LoggedMethodCall && name == other.name && mapEquals(arguments, other.arguments);
   }
 
   @override
@@ -61,19 +59,20 @@ class _ApiLogger implements TestHostImagePickerApi {
     MaxSize maxSize,
     int? imageQuality,
     bool requestFullMetadata,
+    int? selectionLimit,
   ) async {
     calls.add(_LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
       'maxWidth': maxSize.width,
       'maxHeight': maxSize.height,
       'imageQuality': imageQuality,
       'requestFullMetadata': requestFullMetadata,
+      'selectionLimit': selectionLimit,
     }));
     return returnValue as List<String?>?;
   }
 
   @override
-  Future<List<String?>> pickMedia(
-      MediaSelectionOptions mediaSelectionOptions) async {
+  Future<List<String?>> pickMedia(MediaSelectionOptions mediaSelectionOptions) async {
     calls.add(_LoggedMethodCall('pickMedia', arguments: <String, dynamic>{
       'maxWidth': mediaSelectionOptions.maxSize.width,
       'maxHeight': mediaSelectionOptions.maxSize.height,
@@ -85,8 +84,7 @@ class _ApiLogger implements TestHostImagePickerApi {
   }
 
   @override
-  Future<String?> pickVideo(
-      SourceSpecification source, int? maxDurationSeconds) async {
+  Future<String?> pickVideo(SourceSpecification source, int? maxDurationSeconds) async {
     calls.add(_LoggedMethodCall('pickVideo', arguments: <String, dynamic>{
       'source': source.type,
       'cameraDevice': source.camera,
@@ -295,9 +293,7 @@ void main() {
     });
 
     test('camera position can set to front', () async {
-      await picker.pickImage(
-          source: ImageSource.camera,
-          preferredCameraDevice: CameraDevice.front);
+      await picker.pickImage(source: ImageSource.camera, preferredCameraDevice: CameraDevice.front);
 
       expect(
         log.calls,
@@ -323,13 +319,12 @@ void main() {
       expect(
         log.calls,
         <_LoggedMethodCall>[
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': null,
-                'maxHeight': null,
-                'imageQuality': null,
-                'requestFullMetadata': true,
-              }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': null,
+            'maxHeight': null,
+            'imageQuality': null,
+            'requestFullMetadata': true,
+          }),
         ],
       );
     });
@@ -364,55 +359,48 @@ void main() {
       expect(
         log.calls,
         <_LoggedMethodCall>[
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': null,
-                'maxHeight': null,
-                'imageQuality': null,
-                'requestFullMetadata': true,
-              }),
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': 10.0,
-                'maxHeight': null,
-                'imageQuality': null,
-                'requestFullMetadata': true,
-              }),
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': null,
-                'maxHeight': 10.0,
-                'imageQuality': null,
-                'requestFullMetadata': true,
-              }),
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': 10.0,
-                'maxHeight': 20.0,
-                'imageQuality': null,
-                'requestFullMetadata': true,
-              }),
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': 10.0,
-                'maxHeight': null,
-                'imageQuality': 70,
-                'requestFullMetadata': true,
-              }),
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': null,
-                'maxHeight': 10.0,
-                'imageQuality': 70,
-                'requestFullMetadata': true,
-              }),
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': 10.0,
-                'maxHeight': 20.0,
-                'imageQuality': 70,
-                'requestFullMetadata': true,
-              }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': null,
+            'maxHeight': null,
+            'imageQuality': null,
+            'requestFullMetadata': true,
+          }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': 10.0,
+            'maxHeight': null,
+            'imageQuality': null,
+            'requestFullMetadata': true,
+          }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': null,
+            'maxHeight': 10.0,
+            'imageQuality': null,
+            'requestFullMetadata': true,
+          }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': 10.0,
+            'maxHeight': 20.0,
+            'imageQuality': null,
+            'requestFullMetadata': true,
+          }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': 10.0,
+            'maxHeight': null,
+            'imageQuality': 70,
+            'requestFullMetadata': true,
+          }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': null,
+            'maxHeight': 10.0,
+            'imageQuality': 70,
+            'requestFullMetadata': true,
+          }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': 10.0,
+            'maxHeight': 20.0,
+            'imageQuality': 70,
+            'requestFullMetadata': true,
+          }),
         ],
       );
     });
@@ -735,9 +723,7 @@ void main() {
     });
 
     test('camera position can set to front', () async {
-      await picker.getImage(
-          source: ImageSource.camera,
-          preferredCameraDevice: CameraDevice.front);
+      await picker.getImage(source: ImageSource.camera, preferredCameraDevice: CameraDevice.front);
 
       expect(
         log.calls,
@@ -763,13 +749,12 @@ void main() {
       expect(
         log.calls,
         <_LoggedMethodCall>[
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': null,
-                'maxHeight': null,
-                'imageQuality': null,
-                'requestFullMetadata': true,
-              }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': null,
+            'maxHeight': null,
+            'imageQuality': null,
+            'requestFullMetadata': true,
+          }),
         ],
       );
     });
@@ -804,55 +789,48 @@ void main() {
       expect(
         log.calls,
         <_LoggedMethodCall>[
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': null,
-                'maxHeight': null,
-                'imageQuality': null,
-                'requestFullMetadata': true,
-              }),
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': 10.0,
-                'maxHeight': null,
-                'imageQuality': null,
-                'requestFullMetadata': true,
-              }),
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': null,
-                'maxHeight': 10.0,
-                'imageQuality': null,
-                'requestFullMetadata': true,
-              }),
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': 10.0,
-                'maxHeight': 20.0,
-                'imageQuality': null,
-                'requestFullMetadata': true,
-              }),
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': 10.0,
-                'maxHeight': null,
-                'imageQuality': 70,
-                'requestFullMetadata': true,
-              }),
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': null,
-                'maxHeight': 10.0,
-                'imageQuality': 70,
-                'requestFullMetadata': true,
-              }),
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': 10.0,
-                'maxHeight': 20.0,
-                'imageQuality': 70,
-                'requestFullMetadata': true,
-              }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': null,
+            'maxHeight': null,
+            'imageQuality': null,
+            'requestFullMetadata': true,
+          }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': 10.0,
+            'maxHeight': null,
+            'imageQuality': null,
+            'requestFullMetadata': true,
+          }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': null,
+            'maxHeight': 10.0,
+            'imageQuality': null,
+            'requestFullMetadata': true,
+          }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': 10.0,
+            'maxHeight': 20.0,
+            'imageQuality': null,
+            'requestFullMetadata': true,
+          }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': 10.0,
+            'maxHeight': null,
+            'imageQuality': 70,
+            'requestFullMetadata': true,
+          }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': null,
+            'maxHeight': 10.0,
+            'imageQuality': 70,
+            'requestFullMetadata': true,
+          }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': 10.0,
+            'maxHeight': 20.0,
+            'imageQuality': 70,
+            'requestFullMetadata': true,
+          }),
         ],
       );
     });
@@ -1105,10 +1083,7 @@ void main() {
     test('handles a empty path response gracefully', () async {
       log.returnValue = <String>[];
 
-      expect(
-          await picker.getMedia(
-              options: const MediaOptions(allowMultiple: true)),
-          <String>[]);
+      expect(await picker.getMedia(options: const MediaOptions(allowMultiple: true)), <String>[]);
     });
   });
 
@@ -1402,10 +1377,8 @@ void main() {
     test('handles a null image path response gracefully', () async {
       log.returnValue = null;
 
-      expect(
-          await picker.getImageFromSource(source: ImageSource.gallery), isNull);
-      expect(
-          await picker.getImageFromSource(source: ImageSource.camera), isNull);
+      expect(await picker.getImageFromSource(source: ImageSource.gallery), isNull);
+      expect(await picker.getImageFromSource(source: ImageSource.camera), isNull);
     });
 
     test('camera position defaults to back', () async {
@@ -1429,8 +1402,7 @@ void main() {
     test('camera position can set to front', () async {
       await picker.getImageFromSource(
         source: ImageSource.camera,
-        options:
-            const ImagePickerOptions(preferredCameraDevice: CameraDevice.front),
+        options: const ImagePickerOptions(preferredCameraDevice: CameraDevice.front),
       );
 
       expect(
@@ -1496,13 +1468,12 @@ void main() {
       expect(
         log.calls,
         <_LoggedMethodCall>[
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': null,
-                'maxHeight': null,
-                'imageQuality': null,
-                'requestFullMetadata': true,
-              }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': null,
+            'maxHeight': null,
+            'imageQuality': null,
+            'requestFullMetadata': true,
+          }),
         ],
       );
     });
@@ -1548,55 +1519,48 @@ void main() {
       expect(
         log.calls,
         <_LoggedMethodCall>[
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': null,
-                'maxHeight': null,
-                'imageQuality': null,
-                'requestFullMetadata': true,
-              }),
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': 10.0,
-                'maxHeight': null,
-                'imageQuality': null,
-                'requestFullMetadata': true,
-              }),
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': null,
-                'maxHeight': 10.0,
-                'imageQuality': null,
-                'requestFullMetadata': true,
-              }),
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': 10.0,
-                'maxHeight': 20.0,
-                'imageQuality': null,
-                'requestFullMetadata': true,
-              }),
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': 10.0,
-                'maxHeight': null,
-                'imageQuality': 70,
-                'requestFullMetadata': true,
-              }),
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': null,
-                'maxHeight': 10.0,
-                'imageQuality': 70,
-                'requestFullMetadata': true,
-              }),
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': 10.0,
-                'maxHeight': 20.0,
-                'imageQuality': 70,
-                'requestFullMetadata': true,
-              }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': null,
+            'maxHeight': null,
+            'imageQuality': null,
+            'requestFullMetadata': true,
+          }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': 10.0,
+            'maxHeight': null,
+            'imageQuality': null,
+            'requestFullMetadata': true,
+          }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': null,
+            'maxHeight': 10.0,
+            'imageQuality': null,
+            'requestFullMetadata': true,
+          }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': 10.0,
+            'maxHeight': 20.0,
+            'imageQuality': null,
+            'requestFullMetadata': true,
+          }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': 10.0,
+            'maxHeight': null,
+            'imageQuality': 70,
+            'requestFullMetadata': true,
+          }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': null,
+            'maxHeight': 10.0,
+            'imageQuality': 70,
+            'requestFullMetadata': true,
+          }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': 10.0,
+            'maxHeight': 20.0,
+            'imageQuality': 70,
+            'requestFullMetadata': true,
+          }),
         ],
       );
     });
@@ -1656,13 +1620,12 @@ void main() {
       expect(
         log.calls,
         <_LoggedMethodCall>[
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': null,
-                'maxHeight': null,
-                'imageQuality': null,
-                'requestFullMetadata': true,
-              }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': null,
+            'maxHeight': null,
+            'imageQuality': null,
+            'requestFullMetadata': true,
+          }),
         ],
       );
     });
@@ -1678,13 +1641,12 @@ void main() {
       expect(
         log.calls,
         <_LoggedMethodCall>[
-          const _LoggedMethodCall('pickMultiImage',
-              arguments: <String, dynamic>{
-                'maxWidth': null,
-                'maxHeight': null,
-                'imageQuality': null,
-                'requestFullMetadata': false,
-              }),
+          const _LoggedMethodCall('pickMultiImage', arguments: <String, dynamic>{
+            'maxWidth': null,
+            'maxHeight': null,
+            'imageQuality': null,
+            'requestFullMetadata': false,
+          }),
         ],
       );
     });

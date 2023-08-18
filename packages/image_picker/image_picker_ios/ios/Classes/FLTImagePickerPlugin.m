@@ -199,6 +199,7 @@ typedef NS_ENUM(NSInteger, ImagePickerClassType) { UIImagePickerClassType, PHPic
 - (void)pickMultiImageWithMaxSize:(nonnull FLTMaxSize *)maxSize
                           quality:(nullable NSNumber *)imageQuality
                      fullMetadata:(NSNumber *)fullMetadata
+                   selectionLimit:(nullable NSNumber *)selectionLimit
                        completion:(nonnull void (^)(NSArray<NSString *> *_Nullable,
                                                     FlutterError *_Nullable))completion {
   FLTImagePickerMethodCallContext *context =
@@ -206,6 +207,9 @@ typedef NS_ENUM(NSInteger, ImagePickerClassType) { UIImagePickerClassType, PHPic
   context.maxSize = maxSize;
   context.imageQuality = imageQuality;
   context.requestFullMetadata = [fullMetadata boolValue];
+  if (selectionLimit != nil) {
+    context.maxImageCount = selectionLimit.intValue;
+  }
 
   if (@available(iOS 14, *)) {
     [self launchPHPickerWithContext:context];
@@ -228,6 +232,8 @@ typedef NS_ENUM(NSInteger, ImagePickerClassType) { UIImagePickerClassType, PHPic
   context.includeVideo = YES;
   if (![[mediaSelectionOptions allowMultiple] boolValue]) {
     context.maxImageCount = 1;
+  } else if (mediaSelectionOptions.selectionLimit != nil) {
+    context.maxImageCount = mediaSelectionOptions.selectionLimit.intValue;
   }
 
   if (@available(iOS 14, *)) {

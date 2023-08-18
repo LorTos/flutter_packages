@@ -9,8 +9,12 @@ class MultiImagePickerOptions {
   /// Creates an instance with the given [imageOptions].
   const MultiImagePickerOptions({
     this.imageOptions = const ImageOptions(),
+    this.selectionLimit,
   });
 
   /// The image-specific options for picking.
   final ImageOptions imageOptions;
+
+  /// The maximum number of selections the user can make, where available
+  final int? selectionLimit;
 }

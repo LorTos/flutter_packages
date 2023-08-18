@@ -159,7 +159,7 @@ public class ImagePickerDelegateTest {
     ImagePickerDelegate delegate =
         createDelegateWithPendingResultAndOptions(DEFAULT_IMAGE_OPTIONS, null);
 
-    delegate.chooseMultiImageFromGallery(DEFAULT_IMAGE_OPTIONS, false, mockResult);
+    delegate.chooseMultiImageFromGallery(DEFAULT_IMAGE_OPTIONS, false, mockResult, null);
 
     verifyFinishedWithAlreadyActiveError();
     verifyNoMoreInteractions(mockResult);
@@ -206,7 +206,7 @@ public class ImagePickerDelegateTest {
   public void chooseMultiImageFromGallery_launchesChooseFromGalleryIntent() {
 
     ImagePickerDelegate delegate = createDelegate();
-    delegate.chooseMultiImageFromGallery(DEFAULT_IMAGE_OPTIONS, true, mockResult);
+    delegate.chooseMultiImageFromGallery(DEFAULT_IMAGE_OPTIONS, true, mockResult, null);
 
     verify(mockActivity)
         .startActivityForResult(
@@ -219,7 +219,7 @@ public class ImagePickerDelegateTest {
   public void chooseMultiImageFromGallery_withPhotoPicker_launchesChooseFromGalleryIntent() {
 
     ImagePickerDelegate delegate = createDelegate();
-    delegate.chooseMultiImageFromGallery(DEFAULT_IMAGE_OPTIONS, false, mockResult);
+    delegate.chooseMultiImageFromGallery(DEFAULT_IMAGE_OPTIONS, false, mockResult, null);
 
     verify(mockActivity)
         .startActivityForResult(

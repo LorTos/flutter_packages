@@ -19,30 +19,11 @@ class ImagePickerWindows extends CameraDelegatingImagePickerPlatform {
 
   /// List of image extensions used when picking images
   @visibleForTesting
-  static const List<String> imageFormats = <String>[
-    'jpg',
-    'jpeg',
-    'png',
-    'bmp',
-    'webp',
-    'gif',
-    'tif',
-    'tiff',
-    'apng'
-  ];
+  static const List<String> imageFormats = <String>['jpg', 'jpeg', 'png', 'bmp', 'webp', 'gif', 'tif', 'tiff', 'apng'];
 
   /// List of video extensions used when picking videos
   @visibleForTesting
-  static const List<String> videoFormats = <String>[
-    'mov',
-    'wmv',
-    'mkv',
-    'mp4',
-    'webm',
-    'avi',
-    'mpeg',
-    'mpg'
-  ];
+  static const List<String> videoFormats = <String>['mov', 'wmv', 'mkv', 'mp4', 'webm', 'avi', 'mpeg', 'mpg'];
 
   /// The file selector used to prompt the user to select images or videos.
   @visibleForTesting
@@ -84,10 +65,8 @@ class ImagePickerWindows extends CameraDelegatingImagePickerPlatform {
     CameraDevice preferredCameraDevice = CameraDevice.rear,
     Duration? maxDuration,
   }) async {
-    final XFile? file = await getVideo(
-        source: source,
-        preferredCameraDevice: preferredCameraDevice,
-        maxDuration: maxDuration);
+    final XFile? file =
+        await getVideo(source: source, preferredCameraDevice: preferredCameraDevice, maxDuration: maxDuration);
     if (file != null) {
       return PickedFile(file.path);
     }
@@ -127,10 +106,8 @@ class ImagePickerWindows extends CameraDelegatingImagePickerPlatform {
       case ImageSource.camera:
         return super.getImageFromSource(source: source);
       case ImageSource.gallery:
-        const XTypeGroup typeGroup =
-            XTypeGroup(label: 'Images', extensions: imageFormats);
-        final XFile? file = await fileSelector
-            .openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+        const XTypeGroup typeGroup = XTypeGroup(label: 'Images', extensions: imageFormats);
+        final XFile? file = await fileSelector.openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
         return file;
     }
     // Ensure that there's a fallback in case a new source is added.
@@ -152,15 +129,10 @@ class ImagePickerWindows extends CameraDelegatingImagePickerPlatform {
   }) async {
     switch (source) {
       case ImageSource.camera:
-        return super.getVideo(
-            source: source,
-            preferredCameraDevice: preferredCameraDevice,
-            maxDuration: maxDuration);
+        return super.getVideo(source: source, preferredCameraDevice: preferredCameraDevice, maxDuration: maxDuration);
       case ImageSource.gallery:
-        const XTypeGroup typeGroup =
-            XTypeGroup(label: 'Videos', extensions: videoFormats);
-        final XFile? file = await fileSelector
-            .openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+        const XTypeGroup typeGroup = XTypeGroup(label: 'Videos', extensions: videoFormats);
+        final XFile? file = await fileSelector.openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
         return file;
     }
     // Ensure that there's a fallback in case a new source is added.
@@ -176,11 +148,10 @@ class ImagePickerWindows extends CameraDelegatingImagePickerPlatform {
     double? maxWidth,
     double? maxHeight,
     int? imageQuality,
+    int? selectionLimit,
   }) async {
-    const XTypeGroup typeGroup =
-        XTypeGroup(label: 'Images', extensions: imageFormats);
-    final List<XFile> files = await fileSelector
-        .openFiles(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+    const XTypeGroup typeGroup = XTypeGroup(label: 'Images', extensions: imageFormats);
+    final List<XFile> files = await fileSelector.openFiles(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
     return files;
   }
 
@@ -189,18 +160,15 @@ class ImagePickerWindows extends CameraDelegatingImagePickerPlatform {
   // they will be silently ignored by the Windows version of the plugin.
   @override
   Future<List<XFile>> getMedia({required MediaOptions options}) async {
-    const XTypeGroup typeGroup = XTypeGroup(
-        label: 'images and videos',
-        extensions: <String>[...imageFormats, ...videoFormats]);
+    const XTypeGroup typeGroup =
+        XTypeGroup(label: 'images and videos', extensions: <String>[...imageFormats, ...videoFormats]);
 
     List<XFile> files;
 
     if (options.allowMultiple) {
-      files = await fileSelector
-          .openFiles(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+      files = await fileSelector.openFiles(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
     } else {
-      final XFile? file = await fileSelector
-          .openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+      final XFile? file = await fileSelector.openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
       files = <XFile>[
         if (file != null) file,
       ];

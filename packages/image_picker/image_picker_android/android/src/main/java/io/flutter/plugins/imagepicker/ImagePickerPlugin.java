@@ -317,7 +317,7 @@ public class ImagePickerPlugin implements FlutterPlugin, ActivityAware, ImagePic
 
     setCameraDevice(delegate, source);
     if (generalOptions.getAllowMultiple()) {
-      delegate.chooseMultiImageFromGallery(options, generalOptions.getUsePhotoPicker(), result);
+      delegate.chooseMultiImageFromGallery(options, generalOptions.getUsePhotoPicker(), result, generalOptions.getSelectionLimit());
     } else {
       switch (source.getType()) {
         case GALLERY:

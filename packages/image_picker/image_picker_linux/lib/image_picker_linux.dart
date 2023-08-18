@@ -55,10 +55,8 @@ class ImagePickerLinux extends CameraDelegatingImagePickerPlatform {
     CameraDevice preferredCameraDevice = CameraDevice.rear,
     Duration? maxDuration,
   }) async {
-    final XFile? file = await getVideo(
-        source: source,
-        preferredCameraDevice: preferredCameraDevice,
-        maxDuration: maxDuration);
+    final XFile? file =
+        await getVideo(source: source, preferredCameraDevice: preferredCameraDevice, maxDuration: maxDuration);
     if (file != null) {
       return PickedFile(file.path);
     }
@@ -98,10 +96,8 @@ class ImagePickerLinux extends CameraDelegatingImagePickerPlatform {
       case ImageSource.camera:
         return super.getImageFromSource(source: source);
       case ImageSource.gallery:
-        const XTypeGroup typeGroup =
-            XTypeGroup(label: 'Images', mimeTypes: <String>['image/*']);
-        final XFile? file = await fileSelector
-            .openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+        const XTypeGroup typeGroup = XTypeGroup(label: 'Images', mimeTypes: <String>['image/*']);
+        final XFile? file = await fileSelector.openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
         return file;
     }
     // Ensure that there's a fallback in case a new source is added.
@@ -123,15 +119,10 @@ class ImagePickerLinux extends CameraDelegatingImagePickerPlatform {
   }) async {
     switch (source) {
       case ImageSource.camera:
-        return super.getVideo(
-            source: source,
-            preferredCameraDevice: preferredCameraDevice,
-            maxDuration: maxDuration);
+        return super.getVideo(source: source, preferredCameraDevice: preferredCameraDevice, maxDuration: maxDuration);
       case ImageSource.gallery:
-        const XTypeGroup typeGroup =
-            XTypeGroup(label: 'Videos', mimeTypes: <String>['video/*']);
-        final XFile? file = await fileSelector
-            .openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+        const XTypeGroup typeGroup = XTypeGroup(label: 'Videos', mimeTypes: <String>['video/*']);
+        final XFile? file = await fileSelector.openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
         return file;
     }
     // Ensure that there's a fallback in case a new source is added.
@@ -147,11 +138,10 @@ class ImagePickerLinux extends CameraDelegatingImagePickerPlatform {
     double? maxWidth,
     double? maxHeight,
     int? imageQuality,
+    int? selectionLimit,
   }) async {
-    const XTypeGroup typeGroup =
-        XTypeGroup(label: 'Images', mimeTypes: <String>['image/*']);
-    final List<XFile> files = await fileSelector
-        .openFiles(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+    const XTypeGroup typeGroup = XTypeGroup(label: 'Images', mimeTypes: <String>['image/*']);
+    final List<XFile> files = await fileSelector.openFiles(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
     return files;
   }
 
@@ -160,17 +150,14 @@ class ImagePickerLinux extends CameraDelegatingImagePickerPlatform {
   // ignored.
   @override
   Future<List<XFile>> getMedia({required MediaOptions options}) async {
-    const XTypeGroup typeGroup = XTypeGroup(
-        label: 'images and videos', extensions: <String>['image/*', 'video/*']);
+    const XTypeGroup typeGroup = XTypeGroup(label: 'images and videos', extensions: <String>['image/*', 'video/*']);
 
     List<XFile> files;
 
     if (options.allowMultiple) {
-      files = await fileSelector
-          .openFiles(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+      files = await fileSelector.openFiles(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
     } else {
-      final XFile? file = await fileSelector
-          .openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+      final XFile? file = await fileSelector.openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
       files = <XFile>[
         if (file != null) file,
       ];
