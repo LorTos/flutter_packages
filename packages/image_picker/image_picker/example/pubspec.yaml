@@ -16,7 +16,10 @@ dependencies:
     # See https://dart.dev/tools/pub/dependencies#version-constraints
     # The example app is bundled with the plugin so we use a path dependency on
     # the parent directory to use the current plugin's version.
-    path: ../
+    git:
+      url: https://github.com/LorTos/flutter_packages.git
+      path: packages/image_picker/image_picker
+      ref: image_picker/add_selection_limit
   mime: ^1.0.4
   video_player: ^2.1.4
 
